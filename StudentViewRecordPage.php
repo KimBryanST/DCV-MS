@@ -45,11 +45,12 @@
      /*POST THE DATA IN PHPMYADMIN*/
       $id = $_GET["id"];
       $appeal_reason=$_POST["appeal_reason"];
+      $previousPage = $_POST['previous_page'] ?? '/';
       
       $sql = "UPDATE admin_table SET appeal_reason='$appeal_reason' WHERE id='$id'";
       $result = $conn->query($sql);
       if($result){
-          header('location:studentIndex.php?id=$row[id_number]');
+          header("Location:$previousPage");
       }
       else{
           die(mysqli_error($conn));
@@ -77,7 +78,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="studentIndex.php">DCV-MS</a>
+            <a class="navbar-brand ps-3" href="<?php echo $previousPage; ?>">DCV-MS</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -165,7 +166,8 @@
                             </div> 
 
                             <div class="col-12">
-                                <button class="btn btn-primary" type="submit" name="submit">Submit</button>
+                                <input type="hidden" name="previous_page" value="<?php echo $_SERVER['HTTP_REFERER']; ?>">
+                                <button class="btn btn-primary" type="submit">Submit</button>
                             </div>
 
 
